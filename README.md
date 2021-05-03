@@ -22,5 +22,5 @@ $ sh docker/exec.sh
 ### Deploy
 ```
 heroku stack:set container
-git push heroku master
+git push heroku main
 ```
