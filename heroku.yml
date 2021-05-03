@@ -1,5 +1,5 @@
 build:
   docker:
-    web: docker/Dockerfile
+    web: deploy/Dockerfile
 run:
   web: gunicorn api:app
