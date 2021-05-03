@@ -2,4 +2,5 @@ build:
   docker:
     web: deploy/Dockerfile
 run:
-  web: gunicorn api:app
+  web: python api.py
+  # web: gunicorn api:app
