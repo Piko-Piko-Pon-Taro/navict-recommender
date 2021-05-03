@@ -2,3 +2,4 @@ numpy==1.19.2
 torch==1.7.0
 hydra-core==1.0.6
 mlflow==1.14.1
+gunicorn

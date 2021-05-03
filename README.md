@@ -18,3 +18,9 @@ $ sh docker/build.sh
 $ sh docker/run.sh
 $ sh docker/exec.sh
 ```
+
+### Deploy
+```
+heroku stack:set container
+git push heroku master
+```
