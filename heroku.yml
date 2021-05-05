@@ -2,5 +2,4 @@ build:
   docker:
     web: deploy/Dockerfile
 run:
-  web: python api.py
-  # web: gunicorn api:app
+  web: gunicorn --bind 0.0.0.0:${PORT} api:app
