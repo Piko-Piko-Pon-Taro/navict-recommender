@@ -80,7 +80,11 @@ class BaseModel(ABC):
         if not ckpt_path.exists():
             raise ValueError(' The checkpoint is not found.')
 
-        ckpt = torch.load(ckpt_path)
+        if torch.cuda.is_available():
+            ckpt = torch.load(ckpt_path)
+        else:
+            ckpt = torch.load(ckpt_path, torch.device('cpu'))
+
         self.network.load_state_dict(ckpt['model_state_dict'])
 
 
