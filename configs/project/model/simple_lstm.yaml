@@ -1,0 +1,10 @@
+# @package _group_
+#
+# SimpleCNN
+
+name: simple_lstm
+vocab_size: 100 
+emb_dim: 5
+hidden_dim: 100 
+num_layers: 3 
+output_size: 100
