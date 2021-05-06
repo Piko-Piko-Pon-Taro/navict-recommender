@@ -5,8 +5,6 @@ defaults:
   - hydra/job_logging: custom
   - data/sampler: shuffle_sampler
   - train/trainer: default
-  - train/criterion: cross_entropy
-  - train/metric: classification
 
 # MLflow configs
 experiment:
@@ -30,6 +28,10 @@ train:
     name: adam
     lr: 0.0001
     decay: 0.0001
+  criterion:
+    name: cross_entropy
+  metric:
+    name: classification
 
 # Model configs
 model:
