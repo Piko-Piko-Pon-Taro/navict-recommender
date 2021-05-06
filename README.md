@@ -1,5 +1,7 @@
 # navict-recommender
 Recommender for navict.
+This project uses a template by tomoino.
+[PyTorch-Project-Template](https://github.com/tomoino/PyTorch-Project-Template)
 
 ### List of Contents
 * [Installation](https://github.com/Piko-Piko-Pon-Taro/navict-recommender#installation)
