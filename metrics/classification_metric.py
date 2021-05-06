@@ -39,7 +39,6 @@ class ClassificationMetric:
         """
 
         self.num_class = cfg.data.dataset.num_class
-        self.classes = cfg.data.dataset.classes
         self.eps = 1e-9
 
         self.loss_list = []

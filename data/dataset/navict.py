@@ -3,8 +3,8 @@
 
 import os
 import logging
-import sys
 import json
+import random
 
 import torch
 import numpy as np
@@ -31,6 +31,19 @@ class Navict(torch.utils.data.Dataset):
 
         json_open = open('/workspace/datasets/navict/data.json', 'r')
         roadmaps = json.load(json_open)
+
+        # temp begin
+        num_data = 10000
+        library_ids = [ i for i in range(6, 106)]
+        nums = [ i for i in range(0, 10)]
+        roadmaps = []
+
+        for i in range(num_data):
+            l = random.sample(library_ids, 10)
+            l.sort()
+            shuffle_ids = random.sample(nums, 2)
+            roadmaps.append(shuffle_ids)
+        # temp end
 
         x = []
         y = []

@@ -8,6 +8,7 @@ This is the module for handling data.
 import logging
 
 from torch.utils.data.sampler import BatchSampler, SequentialSampler, RandomSampler
+from sklearn.model_selection import train_test_split
 
 from configs.supported_info import SUPPORTED_DATASET, SUPPORTED_SAMPLER
 import data.helper
@@ -69,8 +70,9 @@ def get_dataset(cfg: object, mode: str) -> tuple:
 
     elif dataset_name == "navict":
         dataset = Navict(cfg, mode)
+        train_dataset, val_dataset = train_test_split(dataset, train_size=cfg.data.dataset.train_val_split)
 
-        return dataset, dataset
+        return train_dataset, val_dataset
 
 
 def get_sampler(cfg: object, mode: str, dataset: object) -> object:

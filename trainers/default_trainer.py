@@ -92,7 +92,16 @@ class DefaultTrainer(BaseTrainer):
 
                         losses.append(loss.item())
 
+                        preds = outputs.argmax(axis=1)
+                        self.model.metric.update(preds=preds.cpu().detach().clone(),
+                                            targets=targets.cpu().detach().clone(),
+                                            loss=loss.item())
+
                         pbar.set_description(f'train epoch:{epoch}')
+
+                self.model.metric.calc(epoch, mode='train')
+                self.eval(eval_dataloader=self.val_dataloader, epoch=epoch)
+                self.model.metric.reset_states()
 
                 loss_avg = mean(losses)
                 log.info(f"\tloss: {loss_avg}")
@@ -109,3 +118,44 @@ class DefaultTrainer(BaseTrainer):
             log.info("Successfully trained the model.")
 
             self.log_artifacts()
+
+
+    def eval(self, eval_dataloader: object = None, epoch: int = 0) -> float:
+        """Evaluation
+        Evaluates model.
+        Args:
+            eval_dataloader: Dataloader.
+            epoch: Number of epoch.
+        Returns:
+            model_score: Indicator of the excellence of model. The higher the value, the better.
+        """
+        
+        super().eval()
+
+        if not eval_dataloader:
+            eval_dataloader = self.test_dataloader
+
+        self.model.network.eval()
+
+        with torch.no_grad():
+            with tqdm(eval_dataloader, ncols=100) as pbar:
+                for idx, (inputs, targets) in enumerate(pbar):
+                    inputs = inputs.to(self.model.device)
+                    targets = targets.to(self.model.device)
+
+                    outputs = self.model.network(inputs)
+
+                    loss = self.model.criterion(outputs, targets)
+                    self.model.optimizer.zero_grad()
+
+                    preds = outputs.argmax(axis=1)
+                    self.model.metric.update(preds=preds.cpu().detach().clone(),
+                                        targets=targets.cpu().detach().clone(),
+                                        loss=loss.item())
+
+                    pbar.set_description(f'eval epoch: {epoch}')
+        
+        self.model.metric.calc(epoch, mode='eval')
+        self.model.metric.reset_states()
+
+        return self.model.metric.model_score
