@@ -5,4 +5,4 @@ hydra-core==1.0.6
 gunicorn==20.1.0
 flask==1.1.2
 torchvision==0.7.0
-sklearn==0.24.2
+sklearn==0.0
