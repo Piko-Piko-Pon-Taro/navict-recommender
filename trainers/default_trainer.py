@@ -2,6 +2,8 @@
 """Default Trainer"""
 
 import logging
+import math
+from statistics import mean
 
 from tqdm import tqdm
 import torch
@@ -64,7 +66,7 @@ class DefaultTrainer(BaseTrainer):
         super().train()
 
         epochs = range(self.model.cfg.train.epochs)
-        best_score = 0.0
+        best_loss = math.inf
 
         with mlflow.start_run():
             self.log_params()
@@ -73,6 +75,7 @@ class DefaultTrainer(BaseTrainer):
                 log.info(f"==================== Epoch: {epoch} ====================")
                 log.info(f"Train:")
                 self.model.network.train()
+                losses = []
 
                 with tqdm(self.train_dataloader, ncols=100) as pbar:
                     for idx, (inputs, targets) in enumerate(pbar):
@@ -87,65 +90,22 @@ class DefaultTrainer(BaseTrainer):
                         self.model.optimizer.step()
                         self.model.optimizer.zero_grad()
 
-                        preds = outputs.argmax(axis=1)
-                        self.model.metric.update(preds=preds.cpu().detach().clone(),
-                                            targets=targets.cpu().detach().clone(),
-                                            loss=loss.item())
+                        losses.append(loss.item())
 
                         pbar.set_description(f'train epoch:{epoch}')
 
-                self.model.metric.calc(epoch, mode='train')
-                self.model.metric.reset_states()
+                loss_avg = mean(losses)
+                log.info(f"\tloss: {loss_avg}")
+                metrics = {
+                    "loss": loss_avg,
+                }
+                mlflow.log_metrics(metrics, step = epoch)
 
-                model_score = self.eval(eval_dataloader=self.val_dataloader, epoch=epoch)
-                self.model.metric.reset_states()
-
-                if model_score > best_score:
-                    best_score = model_score
+                if loss_avg < best_loss:
+                    best_loss = loss_avg
                     self.model.save_ckpt(epoch=epoch, ckpt_path=self.cfg.train.ckpt_path)
                     log.info("Saved the check point.")
 
             log.info("Successfully trained the model.")
 
             self.log_artifacts()
-
-
-    def eval(self, eval_dataloader: object = None, epoch: int = 0) -> float:
-        """Evaluation
-        Evaluates model.
-        Args:
-            eval_dataloader: Dataloader.
-            epoch: Number of epoch.
-        Returns:
-            model_score: Indicator of the excellence of model. The higher the value, the better.
-        """
-        
-        super().eval()
-
-        if not eval_dataloader:
-            eval_dataloader = self.test_dataloader
-
-        self.model.network.eval()
-
-        with torch.no_grad():
-            with tqdm(eval_dataloader, ncols=100) as pbar:
-                for idx, (inputs, targets) in enumerate(pbar):
-                    inputs = inputs.to(self.model.device)
-                    targets = targets.to(self.model.device)
-
-                    outputs = self.model.network(inputs)
-
-                    loss = self.model.criterion(outputs, targets)
-                    self.model.optimizer.zero_grad()
-
-                    preds = outputs.argmax(axis=1)
-                    self.model.metric.update(preds=preds.cpu().detach().clone(),
-                                        targets=targets.cpu().detach().clone(),
-                                        loss=loss.item())
-
-                    pbar.set_description(f'eval epoch: {epoch}')
-        
-        self.model.metric.calc(epoch, mode='eval')
-        self.model.metric.reset_states()
-
-        return self.model.metric.model_score

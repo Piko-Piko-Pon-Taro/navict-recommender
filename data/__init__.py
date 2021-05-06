@@ -14,6 +14,7 @@ import data.helper
 from data.dataloader import DataLoader
 from data.dataset.omniglot import Omniglot
 from data.dataset.cifar10 import CIFAR10
+from data.dataset.navict import Navict
 from data.sampler.balanced_batch_sampler import BalancedBatchSampler
 
 
@@ -65,6 +66,11 @@ def get_dataset(cfg: object, mode: str) -> tuple:
             return helper.classification_train_val_split(dataset=filtered_dataset, num_shot=num_shot)
         elif mode == "test":
             return filtered_dataset
+
+    elif dataset_name == "navict":
+        dataset = Navict(cfg, mode)
+
+        return dataset, dataset
 
 
 def get_sampler(cfg: object, mode: str, dataset: object) -> object:

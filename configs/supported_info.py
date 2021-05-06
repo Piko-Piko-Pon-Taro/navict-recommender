@@ -6,6 +6,7 @@ Information about supported datasets, samplers, models, optimizers, criterions a
 SUPPORTED_DATASET = [
     "omniglot",
     "cifar10",
+    "navict"
 ]
 
 SUPPORTED_SAMPLER = [
@@ -16,6 +17,7 @@ SUPPORTED_SAMPLER = [
 SUPPORTED_MODEL = [
     "resnet18",
     "simple_cnn",
+    "simple_lstm",
 ]
 
 SUPPORTED_OPTIMIZER = [
@@ -32,4 +34,5 @@ SUPPORTED_METRIC = [
 
 SUPPORTED_TRAINER = [
     "default",
+    "bptt",
 ]

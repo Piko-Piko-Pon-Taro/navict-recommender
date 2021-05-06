@@ -1,0 +1,42 @@
+# Default project 
+
+# Import presets
+defaults:
+  - hydra/job_logging: custom
+  - data/sampler: shuffle_sampler
+  - train/trainer: default
+  - train/criterion: cross_entropy
+
+# MLflow configs
+experiment:
+  name: Navict
+
+data:
+  dataset:
+    name: navict
+    num_library: 110
+
+# Training configs
+train:
+  batch_size: 10
+  epochs: 100
+  save_best_ckpt: True
+  num_workers: 2
+  ckpt_path: best_ckpt.pth
+  eval: False
+  optimizer:
+    name: adam
+    lr: 0.0001
+    decay: 0.0001
+  metric:
+    name:
+
+# Model configs
+model:
+  initial_ckpt: 
+  name: simple_lstm
+  vocab_size: 110 
+  emb_dim: 5
+  hidden_dim: 64 
+  num_layers: 3 
+  output_size: 110

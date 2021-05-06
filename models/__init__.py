@@ -8,6 +8,7 @@ This is the module for models.
 from configs.supported_info import SUPPORTED_MODEL
 from models.networks.resnet18 import ResNet18
 from models.networks.simple_cnn import SimpleCNN
+from models.networks.simple_lstm import SimpleLSTM
 
 
 def get_model(cfg: object) -> object:
@@ -35,3 +36,5 @@ def get_model(cfg: object) -> object:
         return ResNet18(cfg)
     elif model_name == "simple_cnn":
         return SimpleCNN(cfg)  
+    elif model_name == "simple_lstm":
+        return SimpleLSTM(cfg)  
