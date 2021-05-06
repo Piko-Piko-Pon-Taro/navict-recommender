@@ -6,3 +6,4 @@ gunicorn==20.1.0
 flask==1.1.2
 torchvision==0.7.0
 sklearn==0.0
+mlflow==1.14.1
