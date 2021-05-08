@@ -15,6 +15,7 @@ data:
     name: navict
     num_class: 110
     train_val_split: 0.8
+    len_input: 3
 
 # Training configs
 train:
@@ -29,20 +30,14 @@ train:
     lr: 0.0001
     decay: 0.0001
   criterion:
-    # name: cross_entropy
-    name: nll_loss
+    name: cross_entropy
+    # name: nll_loss
   metric:
     name: classification
 
 # Model configs
 model:
   initial_ckpt: 
-  name: simple_lstm
-  hidden_dim: 100
-  num_layers: 1 
-  output_size: 110
-  embedder:
-    name: cbow
-    emb_size: 100
-    vocab_size: 110 
-    initial_ckpt: /workspace/embedding.pth
+  name: simple_nn
+  emb_size: 100
+  vocab_size: 110 

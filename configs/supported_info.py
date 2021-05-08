@@ -20,7 +20,8 @@ SUPPORTED_MODEL = [
     "simple_cnn",
     "simple_lstm",
     "simple_rnn",
-    "cbow_embedder"
+    "cbow_embedder",
+    "simple_nn",
 ]
 
 SUPPORTED_OPTIMIZER = [

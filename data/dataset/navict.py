@@ -34,7 +34,7 @@ class Navict(torch.utils.data.Dataset):
         roadmaps = json.load(json_open)
 
         # data generation for test: begin
-        num_roadmaps = 10000
+        num_roadmaps = 1000
         library_ids = [ i for i in range(6, 106)]
         nums = [ i for i in range(0, 10)]
         roadmaps = []
@@ -61,13 +61,14 @@ class Navict(torch.utils.data.Dataset):
 
         x = []
         y = []
+        len_input = cfg.data.dataset.len_input
 
         for roadmap in roadmaps:
-            roadmap = [0, 0] + roadmap
+            roadmap = [0]*len_input + roadmap
 
-            for i in range(len(roadmap) - 3):
-                x.append(roadmap[i:i+3])
-                y.append(roadmap[i+3])
+            for i in range(len_input, len(roadmap)):
+                x.append(roadmap[i-len_input:i])
+                y.append(roadmap[i])
 
         self.x = torch.tensor(x)
         self.y = torch.tensor(y).long()

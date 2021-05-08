@@ -10,6 +10,7 @@ from models.networks.resnet18 import ResNet18
 from models.networks.simple_cnn import SimpleCNN
 from models.networks.simple_lstm import SimpleLSTM
 from models.networks.simple_rnn import SimpleRNN
+from models.networks.simple_nn import SimpleNN
 from models.networks.cbow_embedder import CBOW
 
 
@@ -42,5 +43,7 @@ def get_model(cfg: object) -> object:
         return SimpleLSTM(cfg)  
     elif model_name == "simple_rnn":
         return SimpleRNN(cfg)  
+    elif model_name == "simple_nn":
+        return SimpleNN(cfg)  
     elif model_name == "cbow_embedder":
         return CBOW(cfg)  
