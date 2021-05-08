@@ -38,5 +38,8 @@ SUPPORTED_METRIC = [
 
 SUPPORTED_TRAINER = [
     "default",
-    "embedding",
+]
+
+SUPPORTED_EMBEDDER = [
+    "cbow",
 ]

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """SimpleLSTM"""
 
+import torch
 import torch as nn
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
 
 from models.base_model import BaseModel
+from models.networks.cbow_embedder import Net as CBOW
 
 
 class Net(nn.Module):
@@ -17,9 +19,9 @@ class Net(nn.Module):
         """Initialization
 
         Args:
-            embedding: Embedding layer.
+            embedder: Embedding layer.
             vocab_size: Vocabulary size for embedding.
-            emb_dim: Dimension of embedding.
+            emb_size: Dimension of embedding.
             hidden_dim: Dimension of hidden state.
             num_layers: Number of RNN hidden layers.
             output_size: Output size.
@@ -27,17 +29,16 @@ class Net(nn.Module):
 
         super().__init__()
         self.emb = embedder.embedding
-        # self.emb = nn.Embedding(vocab_size, emb_dim)
-        # self.emb_dim = emb_dim
+        self.emb_size = embedder.emb_size
         self.hidden_dim = hidden_dim
-        self.lstm = nn.LSTM(embedder.emb_size, hidden_dim)
+        self.lstm = nn.LSTM(self.emb_size, hidden_dim)
         self.fc = nn.Linear(hidden_dim, output_size)
         self.softmax = nn.LogSoftmax(dim=1)
 
 
     def forward(self, x):
         x = self.emb(x)
-        _, (h, c) = self.lstm(x.view(len(x[0]), -1, self.emb_dim))
+        _, (h, c) = self.lstm(x.view(len(x[0]), -1, self.emb_size))
         x = self.fc(h.view(-1, self.hidden_dim))
         x = self.softmax(x)
 
@@ -60,8 +61,11 @@ class SimpleLSTM(BaseModel):
 
         super().__init__(cfg)
         # self.vocab_size = self.cfg.model.vocab_size
-        # self.emb_dim = self.cfg.model.emb_dim
-        self.embedder = torch.load(self.cfg.model.embedder_path)
+        # self.emb_size = self.cfg.model.embedder.emb_size
+        # self.embedder = get_embedder(self.cfg.model.embedder.name)
+        self.embedder = CBOW(vocab_size=self.cfg.model.embedder.vocab_size, emb_size=self.cfg.model.embedder.emb_size)
+        ckpt = torch.load(self.cfg.model.embedder.initial_ckpt)
+        self.embedder.load_state_dict(ckpt['model_state_dict'])
         self.hidden_dim = self.cfg.model.hidden_dim
         self.num_layers = self.cfg.model.num_layers
         self.output_size = self.cfg.model.output_size

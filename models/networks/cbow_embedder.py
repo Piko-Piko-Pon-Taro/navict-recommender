@@ -21,21 +21,18 @@ class Net(nn.Module):
             emb_size
         """
 
+        self.vocab_size = vocab_size
+        self.emb_size = emb_size
         self.embedding = nn.Embedding(vocab_size, emb_size)
         self.linear = nn.Linear(emb_size, vocab_size, bias=False)
         self.softmax = nn.LogSoftmax(dim=-1)
 
 
     def forward(self, x):
-        """
-        :param batch_X: torch.Tensor(dtype=torch.long), (batch_size, window*2)
-        :param batch_Y: torch.Tensor(dtype=torch.long), (batch_size,)
-        :return loss: torch.Tensor(dtype=torch.float), CBOWのloss
-        """
-        x = self.embedding(x) # (batch_size, window*2, embedding_size)
-        x = torch.sum(x, dim=1) # (batch_size, embedding_size)
-        x = self.linear(x) # (batch_size, vocab_size)
-        x=  self.softmax(x) # (batch_size, vocab_size)
+        x = self.embedding(x)
+        x = torch.sum(x, dim=1)
+        x = self.linear(x)
+        x=  self.softmax(x)
 
         return x
 

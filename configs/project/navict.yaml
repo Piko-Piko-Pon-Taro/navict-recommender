@@ -38,9 +38,11 @@ train:
 model:
   initial_ckpt: 
   name: simple_lstm
-  vocab_size: 110 
   hidden_dim: 100
   num_layers: 1 
   output_size: 110
-  emb_dim: 100
-  embedder_path: embedding.pth
+  embedder:
+    name: cbow
+    emb_size: 100
+    vocab_size: 110 
+    initial_ckpt: /workspace/embedding.pth
