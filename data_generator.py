@@ -56,14 +56,14 @@ def main():
     with open('/workspace/datasets/navict/data.json', mode='wt', encoding='utf-8') as f:
         json.dump(dataset, f)
 
-    # with open("/workspace/datasets/navict/library.txt", mode='w') as f:
-    #     f.write(library)
+    with open("/workspace/datasets/navict/library.txt", mode='w') as f:
+        f.write(library)
 
-    # with open("/workspace/datasets/navict/roadmap.txt", mode='w') as f:
-    #     f.write(roadmap)
+    with open("/workspace/datasets/navict/roadmap.txt", mode='w') as f:
+        f.write(roadmap)
 
-    # with open("/workspace/datasets/navict/step.txt", mode='w') as f:
-    #     f.write(step)
+    with open("/workspace/datasets/navict/step.txt", mode='w') as f:
+        f.write(step)
 
 
 if __name__ == "__main__":
