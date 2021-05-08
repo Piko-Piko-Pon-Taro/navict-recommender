@@ -68,7 +68,7 @@ class NavictCBOW(torch.utils.data.Dataset):
 
             for i in range(w, len(roadmap) - w):
                 x.append(roadmap[i-w:i] + roadmap[i+1:i+1+w])
-                y.append(i)
+                y.append(roadmap[i])
 
         self.x = torch.tensor(x)
         self.y = torch.tensor(y).long()
