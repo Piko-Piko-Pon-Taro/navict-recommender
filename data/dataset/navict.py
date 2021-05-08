@@ -34,7 +34,7 @@ class Navict(torch.utils.data.Dataset):
         roadmaps = json.load(json_open)
 
         # data generation for test: begin
-        num_roadmaps = 1000
+        num_roadmaps = 100
         library_ids = [ i for i in range(6, 106)]
         nums = [ i for i in range(0, 10)]
         roadmaps = []
@@ -52,10 +52,10 @@ class Navict(torch.utils.data.Dataset):
             pool = pools[i % num_pool]
             l = random.sample( pool, 10)
             l.sort()
-            shuffle_ids = random.sample(nums, 2)
-            tmp = l[shuffle_ids[0]]
-            l[shuffle_ids[0]] = l[shuffle_ids[1]]
-            l[shuffle_ids[1]] = tmp
+            # shuffle_ids = random.sample(nums, 2)
+            # tmp = l[shuffle_ids[0]]
+            # l[shuffle_ids[0]] = l[shuffle_ids[1]]
+            # l[shuffle_ids[1]] = tmp
             roadmaps.append(l)
         # data generation for test: end
 

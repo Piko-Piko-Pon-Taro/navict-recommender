@@ -7,13 +7,14 @@ import torch.nn.functional as F
 import torchvision.models as models
 
 from models.base_model import BaseModel
+from models.networks.cbow_embedder import Net as CBOW
 
 
 class Net(nn.Module):
     """Network for CBOW"""
     """ CBOW """
     
-    def __init__(self, vocab_size, emb_size):
+    def __init__(self, embedder):
         super().__init__()
         """
         Args:
@@ -21,18 +22,23 @@ class Net(nn.Module):
             emb_size
         """
 
-        self.vocab_size = vocab_size
-        self.emb_size = emb_size
-        self.embedding = nn.Embedding(vocab_size, emb_size)
-        self.linear = nn.Linear(emb_size, vocab_size, bias=False)
-        self.softmax = nn.Softmax(dim=-1)
+        self.embedding = embedder.embedding
+        self.embedding.weight.requires_grad = False
+        self.emb_size = embedder.emb_size
+        self.vocab_size = embedder.vocab_size
+
+        self.net = nn.Sequential(
+            nn.Linear(self.emb_size, 128, bias=False),
+            nn.Dropout(p=0.2, inplace=False),
+            nn.Linear(128, self.vocab_size, bias=False),
+            nn.Softmax(dim=-1)
+        )
 
 
     def forward(self, x):
         x = self.embedding(x)
         x = torch.sum(x, dim=1)
-        x = self.linear(x)
-        x = self.softmax(x)
+        x = self.net(x)
 
         return x
 
@@ -51,10 +57,15 @@ class SimpleNN(BaseModel):
         """
 
         super().__init__(cfg)
-        self.vocab_size = cfg.model.vocab_size
-        self.emb_size = cfg.model.emb_size
+
+        self.embedder = CBOW(vocab_size=self.cfg.model.embedder.vocab_size, emb_size=self.cfg.model.embedder.emb_size)
+        ckpt = torch.load(self.cfg.model.embedder.initial_ckpt)
+        self.embedder.load_state_dict(ckpt['model_state_dict'])
+
+        # self.vocab_size = cfg.model.vocab_size
+        # self.emb_size = cfg.model.emb_size
         self.num_class = self.cfg.data.dataset.num_class
 
-        self.network = Net(vocab_size=self.vocab_size, emb_size=self.emb_size)
+        self.network = Net(embedder=self.embedder)
 
         self.build()

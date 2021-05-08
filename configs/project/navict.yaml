@@ -20,7 +20,7 @@ data:
 # Training configs
 train:
   batch_size: 10
-  epochs: 10
+  epochs: 100
   save_best_ckpt: True
   num_workers: 2
   ckpt_path: best_ckpt.pth
@@ -39,5 +39,22 @@ train:
 model:
   initial_ckpt: 
   name: simple_nn
-  emb_size: 100
-  vocab_size: 110 
+  embedder:
+    emb_size: 100
+    vocab_size: 110 
+    initial_ckpt: /workspace/embedder.pth
+
+# model:
+#   initial_ckpt: 
+#   name: simple_nn
+#   emb_size: 100
+#   vocab_size: 110 
+
+# model:
+#   initial_ckpt: null
+#   name: simple_rnn
+#   hidden_dim: 100
+#   num_layers: 1
+#   output_size: 110
+#   emb_size: 100
+#   vocab_size: 110
