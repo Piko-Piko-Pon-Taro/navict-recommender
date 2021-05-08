@@ -67,8 +67,6 @@ class SimpleNN(BaseModel):
             
         self.embedder.load_state_dict(ckpt['model_state_dict'])
 
-        # self.vocab_size = cfg.model.vocab_size
-        # self.emb_size = cfg.model.emb_size
         self.num_class = self.cfg.data.dataset.num_class
 
         self.network = Net(embedder=self.embedder)
