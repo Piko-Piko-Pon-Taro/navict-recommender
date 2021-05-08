@@ -16,6 +16,7 @@ from data.dataloader import DataLoader
 from data.dataset.omniglot import Omniglot
 from data.dataset.cifar10 import CIFAR10
 from data.dataset.navict import Navict
+from data.dataset.navict_cbow import NavictCBOW
 from data.sampler.balanced_batch_sampler import BalancedBatchSampler
 
 
@@ -73,6 +74,11 @@ def get_dataset(cfg: object, mode: str) -> tuple:
         train_dataset, val_dataset = train_test_split(dataset, train_size=cfg.data.dataset.train_val_split)
 
         return train_dataset, val_dataset
+
+    elif dataset_name == "navict_cbow":
+        dataset = NavictCBOW(cfg, mode)
+
+        return dataset, dataset
 
 
 def get_sampler(cfg: object, mode: str, dataset: object) -> object:

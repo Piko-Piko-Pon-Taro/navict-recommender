@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """SimpleLSTM"""
 
+import torch as nn
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
@@ -12,10 +13,11 @@ class Net(nn.Module):
     """Network for SimpleLSTM"""
 
 
-    def __init__(self, vocab_size, emb_dim, hidden_dim, num_layers, output_size) -> None:
+    def __init__(self, embedder, hidden_dim, num_layers, output_size) -> None:
         """Initialization
 
         Args:
+            embedding: Embedding layer.
             vocab_size: Vocabulary size for embedding.
             emb_dim: Dimension of embedding.
             hidden_dim: Dimension of hidden state.
@@ -24,12 +26,14 @@ class Net(nn.Module):
         """
 
         super().__init__()
-        self.emb = nn.Embedding(vocab_size, emb_dim)
-        self.emb_dim = emb_dim
+        self.emb = embedder.embedding
+        # self.emb = nn.Embedding(vocab_size, emb_dim)
+        # self.emb_dim = emb_dim
         self.hidden_dim = hidden_dim
-        self.lstm = nn.LSTM(emb_dim, hidden_dim)
+        self.lstm = nn.LSTM(embedder.emb_size, hidden_dim)
         self.fc = nn.Linear(hidden_dim, output_size)
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.LogSoftmax(dim=1)
+
 
     def forward(self, x):
         x = self.emb(x)
@@ -55,15 +59,16 @@ class SimpleLSTM(BaseModel):
         """
 
         super().__init__(cfg)
-        self.vocab_size = self.cfg.model.vocab_size
-        self.emb_dim = self.cfg.model.emb_dim
+        # self.vocab_size = self.cfg.model.vocab_size
+        # self.emb_dim = self.cfg.model.emb_dim
+        self.embedder = torch.load(self.cfg.model.embedder_path)
         self.hidden_dim = self.cfg.model.hidden_dim
         self.num_layers = self.cfg.model.num_layers
         self.output_size = self.cfg.model.output_size
 
         self.network = Net(
-            vocab_size=self.vocab_size, 
-            emb_dim=self.emb_dim, 
+            # vocab_size=self.vocab_size, 
+            embedder=self.embedder, 
             hidden_dim=self.hidden_dim, 
             num_layers=self.num_layers, 
             output_size=self.output_size

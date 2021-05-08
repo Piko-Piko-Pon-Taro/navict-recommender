@@ -8,21 +8,21 @@ defaults:
 
 # MLflow configs
 experiment:
-  name: Navict
+  name: NavictEmbedder
 
 data:
   dataset:
-    name: navict
+    name: navict_cbow
+    window_size: 3
     num_class: 110
-    train_val_split: 0.8
 
 # Training configs
 train:
   batch_size: 10
-  epochs: 10
+  epochs: 100
   save_best_ckpt: True
   num_workers: 2
-  ckpt_path: best_ckpt.pth
+  ckpt_path: embedder.pth
   eval: False
   optimizer:
     name: adam
@@ -37,10 +37,6 @@ train:
 # Model configs
 model:
   initial_ckpt: 
-  name: simple_lstm
+  name: cbow_embedder
   vocab_size: 110 
-  hidden_dim: 100
-  num_layers: 1 
-  output_size: 110
-  emb_dim: 100
-  embedder_path: embedding.pth
+  emb_size: 100

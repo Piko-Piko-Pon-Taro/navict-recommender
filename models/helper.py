@@ -68,3 +68,6 @@ def get_criterion(cfg: object) -> object:
 
     if criterion_name == "cross_entropy":
         return nn.CrossEntropyLoss()
+
+    elif criterion_name == "nll_loss":
+        return nn.NLLLoss()

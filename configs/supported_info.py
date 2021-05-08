@@ -6,7 +6,8 @@ Information about supported datasets, samplers, models, optimizers, criterions a
 SUPPORTED_DATASET = [
     "omniglot",
     "cifar10",
-    "navict"
+    "navict",
+    "navict_cbow",
 ]
 
 SUPPORTED_SAMPLER = [
@@ -19,6 +20,7 @@ SUPPORTED_MODEL = [
     "simple_cnn",
     "simple_lstm",
     "simple_rnn",
+    "cbow_embedder"
 ]
 
 SUPPORTED_OPTIMIZER = [
@@ -27,6 +29,7 @@ SUPPORTED_OPTIMIZER = [
 
 SUPPORTED_CRITERION = [
     "cross_entropy",
+    "nll_loss",
 ]
 
 SUPPORTED_METRIC = [
@@ -35,5 +38,5 @@ SUPPORTED_METRIC = [
 
 SUPPORTED_TRAINER = [
     "default",
-    "bptt",
+    "embedding",
 ]
