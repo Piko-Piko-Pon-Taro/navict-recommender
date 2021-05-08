@@ -34,29 +34,29 @@ class NavictCBOW(torch.utils.data.Dataset):
         roadmaps = json.load(json_open)
 
         # data generation for test: begin
-        num_roadmaps = 1000
-        library_ids = [ i for i in range(6, 106)]
-        nums = [ i for i in range(0, 10)]
-        roadmaps = []
-        num_category_unit = 20
-        num_pool = math.ceil(len(library_ids) // num_category_unit)
+        # num_roadmaps = 1000
+        # library_ids = [ i for i in range(6, 106)]
+        # nums = [ i for i in range(0, 10)]
+        # roadmaps = []
+        # num_category_unit = 20
+        # num_pool = math.ceil(len(library_ids) // num_category_unit)
 
-        pools = []
-        for i in range(num_pool):
-            pool = library_ids[i * num_category_unit: i * (num_category_unit+1)]
-            if len(pool) < num_category_unit:
-                pool = library_ids[-num_category_unit:]
-            pools.append(pool)
+        # pools = []
+        # for i in range(num_pool):
+        #     pool = library_ids[i * num_category_unit: i * (num_category_unit+1)]
+        #     if len(pool) < num_category_unit:
+        #         pool = library_ids[-num_category_unit:]
+        #     pools.append(pool)
 
-        for i in range(num_roadmaps):
-            pool = pools[i % num_pool]
-            l = random.sample( pool, 10)
-            l.sort()
-            # shuffle_ids = random.sample(nums, 2)
-            # tmp = l[shuffle_ids[0]]
-            # l[shuffle_ids[0]] = l[shuffle_ids[1]]
-            # l[shuffle_ids[1]] = tmp
-            roadmaps.append(l)
+        # for i in range(num_roadmaps):
+        #     pool = pools[i % num_pool]
+        #     l = random.sample( pool, 10)
+        #     l.sort()
+        #     # shuffle_ids = random.sample(nums, 2)
+        #     # tmp = l[shuffle_ids[0]]
+        #     # l[shuffle_ids[0]] = l[shuffle_ids[1]]
+        #     # l[shuffle_ids[1]] = tmp
+        #     roadmaps.append(l)
         # data generation for test: end
 
         x = []

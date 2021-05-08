@@ -13,13 +13,15 @@ from flask import Flask, Blueprint, request, abort, jsonify
 import torch
 from omegaconf import OmegaConf
 
-from models.networks.simple_lstm import SimpleLSTM
+from models.networks.simple_nn import SimpleNN
 
 app = Flask(__name__)
 
 cfg = OmegaConf.load('./configs/project/navict.yaml')
 cfg.model.initial_ckpt = "./model.pth"
-model = SimpleLSTM(cfg)  
+cfg.model.embedder.initial_ckpt = "./embedder.pth"
+model = SimpleNN(cfg)  
+
 
 @app.route('/suggestions', methods=['POST'])
 def suggestions():

@@ -58,3 +58,14 @@ model:
 #   output_size: 110
 #   emb_size: 100
 #   vocab_size: 110
+
+# model:
+#   initial_ckpt: 
+#   name: simple_lstm
+#   hidden_dim: 100
+#   num_layers: 1
+#   output_size: 110
+#   embedder:
+#     emb_size: 100
+#     vocab_size: 110 
+#     initial_ckpt: /workspace/embedder.pth
