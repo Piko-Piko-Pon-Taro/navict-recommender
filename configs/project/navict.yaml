@@ -20,7 +20,7 @@ data:
 # Training configs
 train:
   batch_size: 10
-  epochs: 100
+  epochs: 200
   save_best_ckpt: True
   num_workers: 2
   ckpt_path: best_ckpt.pth

@@ -43,7 +43,7 @@ class Navict(torch.utils.data.Dataset):
 
         # pools = []
         # for i in range(num_pool):
-        #     pool = library_ids[i * num_category_unit: i * (num_category_unit+1)]
+        #     pool = library_ids[i * num_category_unit: (i+1) * num_category_unit]
         #     if len(pool) < num_category_unit:
         #         pool = library_ids[-num_category_unit:]
         #     pools.append(pool)
