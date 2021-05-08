@@ -18,6 +18,7 @@ SUPPORTED_MODEL = [
     "resnet18",
     "simple_cnn",
     "simple_lstm",
+    "simple_rnn",
 ]
 
 SUPPORTED_OPTIMIZER = [

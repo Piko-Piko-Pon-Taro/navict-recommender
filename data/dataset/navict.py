@@ -32,18 +32,26 @@ class Navict(torch.utils.data.Dataset):
         json_open = open('/workspace/datasets/navict/data.json', 'r')
         roadmaps = json.load(json_open)
 
-        # temp begin
-        num_data = 10000
+        # data generation for test: begin
+        num_roadmaps = 1000
         library_ids = [ i for i in range(6, 106)]
         nums = [ i for i in range(0, 10)]
         roadmaps = []
+        num_category_unit = 20
 
-        for i in range(num_data):
-            l = random.sample(library_ids, 10)
-            l.sort()
+        for i in range(num_roadmaps):
+            c = i // num_category_unit
+            pool = library_ids[ c * num_category_unit: c * (num_category_unit+1)]
+            if len(pool) < num_category_unit:
+                pool = library_ids[-num_category_unit:]
+            l = random.sample( pool, 10)
+            # l.sort()
             shuffle_ids = random.sample(nums, 2)
-            roadmaps.append(shuffle_ids)
-        # temp end
+            tmp = l[shuffle_ids[0]]
+            l[shuffle_ids[0]] = l[shuffle_ids[1]]
+            l[shuffle_ids[1]] = tmp
+            roadmaps.append(l)
+        # data generation for test: end
 
         x = []
         y = []
