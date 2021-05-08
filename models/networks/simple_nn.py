@@ -59,7 +59,12 @@ class SimpleNN(BaseModel):
         super().__init__(cfg)
 
         self.embedder = CBOW(vocab_size=self.cfg.model.embedder.vocab_size, emb_size=self.cfg.model.embedder.emb_size)
-        ckpt = torch.load(self.cfg.model.embedder.initial_ckpt)
+        ckpt_path = torch.load(self.cfg.model.embedder.initial_ckpt)
+        if torch.cuda.is_available():
+            ckpt = torch.load(ckpt_path)
+        else:
+            ckpt = torch.load(ckpt_path, torch.device('cpu'))
+            
         self.embedder.load_state_dict(ckpt['model_state_dict'])
 
         # self.vocab_size = cfg.model.vocab_size
