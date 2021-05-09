@@ -27,6 +27,10 @@ model = SimpleNN(cfg)
 def suggestions():
     payload = request.json
     library_ids = payload.get('library_ids')
+    for idx, v in enumerate(library_ids):
+        if v >= model.embedder.vocab_size:
+            library_ids[idx] = 0
+
     inputs = torch.tensor([library_ids])
     inputs = inputs.to(model.device)
     outputs = model.network(inputs)
